@@ -5,6 +5,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
 library(dplyr)
 library(readr)
 library(ggplot2)
@@ -14,7 +16,7 @@ library(ggplot2)
 
 This data displays the favorite restaurants of the class. It includes the student's name, restaurant, location, cuisine, dish, cost per person, times visited per year, and last visit.
 ```{r}
-mine <- read_csv("C:\\Users\\lb4pc\\Desktop\\fav_restaurants.csv")
+mine <- read_csv("https://raw.githubusercontent.com/URstats/stat209-s18-laurenblose/master/fav_restaurants.csv")
 ```
 This graph indicates the popularity of cuisines among the class data for favorite restaurants. 
 ```{r}

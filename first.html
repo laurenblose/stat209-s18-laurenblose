@@ -126,18 +126,7 @@ $(document).ready(function () {
 <div id="plotting-the-data" class="section level2">
 <h2>Plotting the Data</h2>
 <p>This data displays the favorite restaurants of the class. It includes the student’s name, restaurant, location, cuisine, dish, cost per person, times visited per year, and last visit.</p>
-<pre class="r"><code>mine &lt;- read_csv(&quot;C:\\Users\\lb4pc\\Desktop\\fav_restaurants.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   student_name = col_character(),
-##   name = col_character(),
-##   location = col_character(),
-##   cuisine = col_character(),
-##   fav_dish = col_character(),
-##   cost_per_person = col_character(),
-##   yearly_visits = col_integer(),
-##   last_visit = col_character()
-## )</code></pre>
+<pre class="r"><code>mine &lt;- read_csv(&quot;https://raw.githubusercontent.com/URstats/stat209-s18-laurenblose/master/fav_restaurants.csv&quot;)</code></pre>
 <p>This graph indicates the popularity of cuisines among the class data for favorite restaurants.</p>
 <pre class="r"><code>ggplot(mine, aes(cuisine)) +
   geom_bar()</code></pre>
