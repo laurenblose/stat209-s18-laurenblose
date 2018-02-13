@@ -1,0 +1,101 @@
+---
+title: "Lab 09: Annotating Data Visualizations"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(fig.height = 5)
+knitr::opts_chunk$set(fig.width = 8.5)
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(dpi = 300)
+
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(viridis)
+theme_set(theme_minimal())
+```
+
+## Pick a dataset
+
+Today you'll have a choice of three datasets to work with. You can choose
+either to investigate Donald Trump's approval rating:
+
+Murder rates across different cities in the US:
+
+```{r}
+murder <- read_csv("https://statsmaths.github.io/stat_data/murder_by_city.csv")
+```
+
+
+Pick a dataset (feel free to delete the others from the Rmd file if you would
+like), and work on the instructions in the next section.
+
+## Instructions
+
+Your goal in this lab is to construct an interesting visualization with the
+data that you choose above. You should make use of several manual annotations
+in an effort to tell a visual story about the dataset. Below, you should
+eventually provide a few sentences describing what you found in the dataset
+and then a single plot illustrating the interesting aspects of the data.
+You should incorporate some external information into your plot.
+
+Note that you will certainly want to create many initial exploratory plots
+before settling on a final one for analysis. This time, make sure you that you
+upload both the Rmd and the html files to GitHub (remember, the final report
+should have just one single visualization).
+
+Also note that you will have to use the format `x = as.Date("2017-01-06")` to
+add annotations to an axis that uses time as a component.
+
+## Analysis
+
+```{r}
+ggplot(murder, aes(murders_2014, murders_2015)) +
+  geom_point(color = "black")
+```
+
+```{r}
+ggplot(murder, aes(murders_2014, murders_2015)) +
+  geom_point(color = "black") +
+  geom_abline(slope = 1, intercept = 0)
+```
+
+```{r}
+ggplot(murder, aes(murders_2014, murders_2015)) +
+  geom_point(color = "black") +
+  geom_abline(slope = 1, intercept = 0) +
+  xlab("2014 Murders") +
+  ylab("2015 Murders") +
+  labs(size = "Murders") +
+  ggtitle("Murder Rate in US")
+```
+
+```{r}
+ggplot(murder, aes(murders_2014, murders_2015)) +
+  geom_point(color = "black") +
+  geom_abline(slope = 1, intercept = 0) +
+  xlab("2014 Murders") +
+  ylab("2015 Murders") +
+  labs(size = "Murders") +
+  ggtitle("Murder Rate in US") +
+  annotate("point", x = 411, y = 478, color = "purple", size = 3) +
+  annotate("text", x = 411, y = 465, label = "Chicago") +
+  annotate("point", x = 211, y = 344, color = "red", size = 3) +
+  annotate("text", x = 211, y = 330, label = "Baltimore") +
+  annotate("rect", xmin = 200, xmax = 450,
+                   ymin = 300, ymax = 500,
+                   fill = "purple", alpha = 0.1) +
+  annotate("text", x = 400, y = 400, size = 5.5,
+           label = "Most Dangerous Cities") 
+
+```
+
+
+
+
+
+
