@@ -1,0 +1,130 @@
+---
+title: "Lab 10: Filtering Data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(fig.height = 5)
+knitr::opts_chunk$set(fig.width = 8.5)
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(dpi = 300)
+
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(viridis)
+theme_set(theme_minimal())
+```
+
+## Pick a dataset
+
+```{r}
+tarantino <- read_csv("https://statsmaths.github.io/stat_data/tarantino.csv")
+```
+
+Pick a dataset (feel free to delete the others from the Rmd file if you would
+like), and work on the instructions in the next section.
+
+## Instructions
+
+This lab is similar to the last. You'll pick a dataset and then generate an
+analysis of that data using data visualizations. The difference here is that
+instead of a single plot, I would like you to construct 3-4 plots that
+together tell a linear story. Each plot should be separated by a sentence or
+two describing what the viewer should take away from the plot. Try to keep the
+plots similar in some way; perhaps each simply highlights a different subset
+of the data but has the same underlying layers.
+
+Notice that each of the datasets for today are larger than you will probably
+be able to use. You will need to filter the data to a particular team, year,
+subset of curse words. You may further filter the data to highlight an even
+smaller subset of the data within each plot.
+
+## Analysis
+
+```{r}
+tarantino_new <- filter(tarantino, word %in% c("ass", "bitch", "damn", "hell"))
+tarantino
+```
+
+
+```{r}
+ggplot(tarantino_new, aes(movie)) +
+  geom_bar(aes(fill = word)) +
+  ggtitle("Tarantino Movie Curses") +
+  ylab("Occurences") +
+  xlab("Movie") +
+  coord_flip()
+```
+This plot shows the number of times the curse words ass, bitch, damn, and hell are said in Tarantino movies. 
+
+
+```{r}
+tarantino_ass <- filter(tarantino_new, word %in% c("ass"))
+tarantino_new
+```
+```{r}
+ggplot(tarantino_ass, aes(movie)) +
+  geom_bar(aes(fill = word)) +
+  ggtitle("Ass In Tarantino Movies") +
+  ylab("Occurences") +
+  xlab("Movie") +
+  coord_flip()
+```
+This plot shows the number of times the word ass is said in Tarantino movies.
+
+
+```{r}
+tarantino_bitch <- filter(tarantino_new, word %in% c("bitch"))
+tarantino_new
+```
+
+```{r}
+ggplot(tarantino_bitch, aes(movie)) +
+  geom_bar(aes(fill = word)) +
+  ggtitle("Bitch In Tarantino Movies") +
+  ylab("Occurences") +
+  xlab("Movie") +
+  coord_flip()
+```
+This plot shows the number of times the word bitch is said in Tarantino movies.
+
+
+```{r}
+tarantino_damn <- filter(tarantino_new, word %in% c("damn"))
+tarantino_new
+```
+
+```{r}
+ggplot(tarantino_damn, aes(movie)) +
+  geom_bar(aes(fill = word)) +
+  ggtitle("Damn In Tarantino Movies") +
+  ylab("Occurences") +
+  xlab("Movie") +
+  coord_flip()
+```
+
+This plot shows the number of times the word damn is said in Tarantino movies.
+
+```{r}
+tarantino_hell <- filter(tarantino_new, word %in% c("hell"))
+tarantino_new
+```
+
+```{r}
+ggplot(tarantino_hell, aes(movie)) +
+  geom_bar(aes(fill = word)) +
+  ggtitle("Hell In Tarantino Movies") +
+  ylab("Occurences") +
+  xlab("Movie") +
+  coord_flip()
+```
+
+This plot shows the number of times the word hell is said in Tarantino movies.
+
+
+
+
