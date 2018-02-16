@@ -1,0 +1,19 @@
+inning,fl_pitcher,fl_strikes,fl_balls,fl_pitches_inning,fl_hits_allowed,fl_singles_allowed,fl_doubles_allowed,fl_homeruns_allowed,fl_runs_allowed
+1,Barnhill,10,3,13,0,0,0,0,0
+2,Barnhill,9,6,15,0,0,0,0,0
+3,Barnhill,7,1,8,0,0,0,0,0
+4,Barnhill,9,2,11,0,0,0,0,0
+5,Barnhill,13,4,17,2,1,1,0,1
+6,Barnhill,13,3,16,1,0,0,1,1
+7,Barnhill,7,1,8,1,1,0,0,0
+8,Gourley,7,2,9,0,0,0,0,0
+9,Gourley,8,3,11,0,0,0,0,0
+10,Gourley,7,0,7,0,0,0,0,0
+11,Gourley,11,5,16,0,0,0,0,0
+12,Gourley,16,5,21,2,0,1,1,2
+13,Gourley,6,2,8,0,0,0,0,0
+14,Gourley,11,6,17,0,0,0,0,0
+15,Gourley,16,12,28,1,1,0,0,0
+16,Gourley,3,3,6,1,0,1,0,0
+16.3,Barnhill,8,7,15,0,0,0,0,0
+17,Barnhill ,17,6,23,2,1,0,1,3
