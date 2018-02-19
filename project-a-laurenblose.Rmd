@@ -1,0 +1,184 @@
+---
+title: "2017 Women's College World Series Game 1"
+author: "Lauren Blose"
+output:
+  html_document:
+    df_print: paged
+---
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+```
+
+# 2017 Women's College World Series Game 1
+
+## Overview
+
+This data is from Game 1 of the 2017 Women's College World Series between the Oklahoma Sooners and the Florida Gators. Unlike typical softball games that last 7 innings, this game went 17 innings due to multiple tie scores throughout. In order to collect this data, I watched the entire game and took notes throughout, including the number of pitches, strikes, and balls thrown in each inning by each pitcher for each team. Additionally, I kept track of the hits and types of hits given up by each pitcher, as well as runs scored in each inning. While watching the game, I kept my research question of "what patterns exist in the occurrences of Game 1 of the Women's College World Series for each team?" in mind. 
+
+## Data dictionary
+
+Here is a data dictionary for the ou_wcws dataset:
+
+- **inning**: a numeric variable indicating each inning of the softball game. Where applicable, a decimal ranging from .0 to .3 corresponds to the number of outs a pitcher made prior to being taken out of the game. 
+- **ou_pitcher**: a categorical variable indicating the pitcher for the Oklahoma Sooners being used. Possible options are:
+	"Lowary"
+	"Parker"
+- **ou_strikes**: a numeric variable indicating the number of strikes thrown by an Oklahoma pitcher in each inning. Foul balls and any form of hit is included in this variable.  
+- **ou_balls**: a numeric variable indicating the number of balls thrown by an Oklahoma pitcher in each inning. 
+- **ou_pitches_inning**: a numeric variable indicating the total number of pitches thrown by an Oklahoma pitcher in each inning. 
+- **ou_hits_allowed**: a numeric variable indicating the number of hits allowed by an Oklahoma pitcher in each inning
+- **ou_singles_allowed**: a numeric variable indicating the number of singles allowed by an Oklahoma pitcher in each inning
+- **ou_doubles_allowed**: a numeric variable indicating the number of doubles allowed by an Oklahoma pitcher in each inning
+- **ou_homeruns_allowed**: a numeric variable indicating the number of home runs allowed by an Oklahoma pitcher in each inning
+- **ou_runs_allowed**: a numeric variable indicating the total number of runs allowed by an Oklahoma pitcher in each inning. 
+
+Here is a data dictionary for the fl_wcws dataset:
+
+- **inning**: a number variable indicating each inning of the softball game. Where applicable, a decimal ranging from .0 to .3 corresponds to the number of outs a pitcher made prior to being taken out of the game. 
+- **fl_pitcher**: a categorical variable indicating the pitcher for the Florida Gators being used. Possible options are:
+	"Barnhill"
+	"Gourley"
+- **fl_strikes**: a numeric variable indicating the number of strikes thrown by a Florida pitcher in each inning. Foul balls and any form of hit is included in this variable.  
+- **fl_balls**: a numeric variable indicating the number of balls thrown by a Florida pitcher in each inning. 
+- **fl_pitches_inning**: a numeric variable indicating the total number of pitches thrown by a Florida pitcher in each inning. 
+- **fl_hits_allowed**: a numeric variable indicating the number of hits allowed by a Florida pitcher in each inning
+- **fl_singles_allowed**: a numeric variable indicating the number of singles allowed by a Florida pitcher in each inning
+-**fl_doubles_allowed**: a numeric variable indicating the number of doubles allowed by a Florida pitcher in each inning
+- **fl_homeruns_allowed**: a numeric variable indicating the number of home runs allowed by a Florida pitcher in each inning
+- **fl_runs_allowed**: a numeric variable indicating the total number of runs allowed by a Florida pitcher in each inning. 
+
+Which can be read in as follows:
+
+```{r}
+ou_wcws <- read_csv("https://raw.githubusercontent.com/URstats/stat209-s18-laurenblose/master/ou_wcws.csv")
+ou_wcws
+```
+```{r}
+fl_wcws <- read_csv("https://raw.githubusercontent.com/URstats/stat209-s18-laurenblose/master/fl_wcws.csv")
+fl_wcws
+```
+
+## Exploratory Analysis
+
+After looking at all of the data in the datasets for Oklahoma and Florida, one interesting relationship in these datasets is in regard to the number of hits allowed and the number of runs allowed by each team. As shown by the first graph below, Oklahoma allowed 1 run to score on both 1 hit, 2 hits, and 3 hits. This indicates that 3 of Florida's runs were scored individually in different innings, a compliment to the Oklahoma defense for not allowing further runs to be scored. However, the data point that indicates 2 runs were scored when only 1 hit was recorded may indicate that something interesting occurred in that inning and would lead to further investigation. Similar observations can be made when looking at the variation of this graph involving Florida in the second graph below, highlighting the point indicating 3 runs were scored on 2 hits that may lead to a further inquiry of what happened in that inning. 
+
+```{r, echo=FALSE}
+ggplot(ou_wcws, aes(ou_runs_allowed, ou_hits_allowed)) + 
+  geom_point() +
+  geom_line() +
+  xlab("Runs Allowed") +
+  ylab("Hits Allowed") +
+  ggtitle("Number of Runs Allowed Compared to Number of Hits Allowed by Oklahoma Pitchers") +
+  annotate("rect", xmin = 1.75, xmax = 2.25,
+                   ymin = 0.5, ymax = 1.5,
+                   fill = "purple", alpha = 0.1)
+```
+
+```{r, echo=FALSE}
+ggplot(fl_wcws, aes(fl_runs_allowed, fl_hits_allowed)) + 
+  geom_point() +
+  geom_line() +
+    xlab("Runs Allowed") +
+  ylab("Hits Allowed") +
+  ggtitle("Number of Runs Allowed Compared to Number of Hits Allowed by Florida Pitchers") +
+  annotate("rect", xmin = 2.75, xmax = 3.25,
+                   ymin = 1.75, ymax = 2.25,
+                   fill = "purple", alpha = 0.1)
+```
+
+It is also interesting to note an interesting observation when comparing the following graphs, both of which indicate the number of pitches thrown per inning by each pitcher on Oklahoma and that of Florida. The graphs demonstrate no real trend in consistency between the pitches thrown per inning for each team, as large increases seem to occur for one team when the opposite team did not throw a large number of pitches. The only inning, however, that shows a common trend is the final inning, which is indicated by the last point on the graph. Both teams appear to have thrown a high number of pitches in the final inning, and if one were to look further into what happened in this inning, they would learn that Oklahoma scored 3 runs and Florida scored 1 run, making the inning perhaps the most eventful of the game. 
+
+```{r, echo=FALSE}
+ggplot(ou_wcws, aes(factor(inning), ou_pitches_inning)) + 
+  geom_point(aes(color = ou_pitcher)) +
+  xlab("Inning") +
+  ylab("Pitches") +
+  labs(color = "Oklahoma Pitcher") +
+  ggtitle("Number of Pitches per Inning for Oklahoma Pitchers") +
+  annotate("rect", xmin = 16.95, xmax = 18.5,
+                   ymin = 25, ymax = 29,
+                   fill = "purple", alpha = 0.1)
+```
+
+```{r, echo=FALSE}
+ggplot(fl_wcws, aes(factor(inning), fl_pitches_inning)) + 
+  geom_point(aes(color = fl_pitcher)) +
+  xlab("Inning") +
+  ylab("Pitches") +
+  labs(color = "Florida Pitcher") +
+  ggtitle("Number of Pitches per Inning for Florida Pitchers") +
+  annotate("rect", xmin = 16.95, xmax = 18.5,
+                   ymin = 22, ymax = 25,
+                   fill = "purple", alpha = 0.1)
+```
+
+
+In addition to the graphs discussed above, there are multiple other graphs included in this report that may further elaborate on what was discussed above, including information regarding strikes thrown (graphs 1 and 2 below), a comparison between the number of balls and strikes thrown by pitchers (graphs 3 and 4 below), and the number of runs scored per inning (5 and 6 below).
+
+```{r, echo=FALSE}
+ggplot(ou_wcws, aes(inning, ou_strikes)) +
+    geom_line() +
+  geom_point() +
+   xlab("Inning") +
+  ylab("Strikes") +
+  ggtitle("Number of Strikes per Inning Thrown by Oklahoma Pitchers")
+```
+
+```{r, echo=FALSE}
+ggplot(fl_wcws, aes(inning, fl_strikes)) +
+    geom_line() +
+  geom_point() +
+   xlab("Inning") +
+  ylab("Strikes") +
+  ggtitle("Number of Strikes per Inning Thrown by Florida Pitchers")
+```
+
+```{r, echo=FALSE}
+ggplot(ou_wcws, aes(ou_strikes, ou_balls)) +
+  geom_point(aes(color = ou_pitcher)) +
+  xlab("Strikes") +
+  ylab("Balls") +
+  labs(color = "Oklahoma Pitcher") +
+  ggtitle("Number of Strikes Compared to Number of Balls Thrown by Oklahoma Pitchers")
+```
+
+```{r, echo=FALSE}
+ggplot(fl_wcws, aes(fl_strikes, fl_balls)) +
+  geom_point(aes(color = fl_pitcher)) +
+    xlab("Strikes") +
+  ylab("Balls") +
+  labs(color = "Florida Pitcher") +
+  ggtitle("Number of Strikes Compared to Number of Balls Thrown by Florida Pitchers")
+```
+```{r, echo=FALSE}
+ggplot(ou_wcws, aes(factor(inning), ou_runs_allowed)) +
+  geom_point(aes(color = ou_pitcher)) +
+    xlab("Inning") +
+  ylab("Runs Allowed") +
+  labs(color = "Oklahoma Pitcher") +
+  ggtitle("Number of Runs Allowed per Inning by Oklahoma Pitchers")
+```
+
+```{r, echo=FALSE}
+ggplot(fl_wcws, aes(factor(inning), fl_runs_allowed)) +
+  geom_point(aes(color = fl_pitcher)) +
+    xlab("Inning") +
+  ylab("Runs Allowed") +
+  labs(color = "Florida Pitcher") +
+  ggtitle("Number of Runs Allowed per Inning by Florida Pitchers")
+```
+
+## Conclusion
+
+After conducting this research, I was able to learn that the innings in which one team scored, it was likely for the opposing team to respond and either score as well or come very close to scoring. As a former softball player, I have always known how unpredictable and sporadic the game is, but now that I have had the opportunity to look at it statistically on graphs and within datasets, the unpredictability of the game is even more clear. When it comes to adding something in addition to the research I conducted, I would expand this research across the other two games of the Women's College World Series between Oklahoma and Florida to see if there were any major consistencies. I would also want to look into how statistics such as ERA and Batting Average could play a role in the attempting to predict performance of a player and comparing it to how they performed in the game. 
+
+## References
+
+"2017 NCAA Softball WCWS FINAL - Oklahoma vs Florida game #1." *YouTube*, 6 June 2017, https://www.youtube.com/watch?v=ijoL0Jjakeo.
