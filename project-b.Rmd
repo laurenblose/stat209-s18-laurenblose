@@ -5,7 +5,6 @@ output:
   html_document:
     df_print: paged
 ---
-
 ```{r setup, include=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(message = FALSE)
@@ -24,10 +23,9 @@ library(viridis)
 
 ```{r}
 tracts <- read_csv("https://raw.githubusercontent.com/statsmaths/stat_data/gh-pages/acs_tract_data_2016.csv.gz")
-unique(tracts$cbsa)
+
 
 bsn_ct <-filter(tracts, cbsa == "Bridgeport-Stamford-Norwalk, CT") 
-bsn_ct
 ```
 
 ```{r}
@@ -40,34 +38,33 @@ bpt <- filter(bsn_ct, (lat - 41.187386)^2 + (lon -(-73.195734))^2 < 0.002)
 stm <- filter(bsn_ct, (lat - 41.0534)^2 + (lon - (-73.5387))^2 < 0.002)
 ```
 
+Is there a relationship between race and rent prices being paid across Fairfield County and with respect to Bridgeport and Stamford, CT? What is the correlation between the use of public transportation and the time of one's commute?
 
-## As a resident of Fairfield County in Connecticut, I thought it would be interesting to look at the data from the area I live in. Fairfield County in and of itself has a very interesting dynamic-it has some of the wealthiest towns in the nation, but also has some of the poorest and most dangerous. I chose to do a perspective exploratory data analysis to look at Bridgeport and Stamford, CT. My first visualization is a map of Fairfield County. The red points are those within the longitudinal and latitudinal bounds of Bridgeport, CT, and the blue points are those within that of Stamford, CT. I chose to compare Bridgeport and Stamford to both each other and the rest of Connecticut because they have large downtown areas but are also not as wealthy as other areas of the county. Moreover, both towns are in close proximity to wealthier and larger cities-Bridgeport is a short distance away from Fairfield and Westport, and Stamford is a short ride away from New York City. 
+As a resident of Fairfield County in Connecticut, I thought it would be interesting to look at the data from the area I live in. Fairfield County in and of itself has a very interesting dynamic-it has some of the wealthiest towns in the nation, but also has some of the poorest and most dangerous. I chose to do a perspective exploratory data analysis to look at Bridgeport and Stamford, CT in comparison to not only each other, but the rest of Fairfield County. 
 
 ```{r}
 qmplot(lon, lat, data = bsn_ct, geom = "blank") +
   geom_point() +
   geom_point(data = bpt, color ="red") +
-  geom_point(data = stm, color = "blue") 
+  geom_point(data = stm, color = "blue") +
+  ggtitle("Fairfield County, Connecticut") 
 ```
 
-## This visualization compares the percentage of people that identify as black in Bridgeport and Stamford, colored in olive and salmon respectively, and the remainder of Fairfield County to the median rent that is being paid in the area. An interesting observation from this visualization is that the majority of the points that correspond with Bridgeport are in the same general area of the plot. This group of points shows that there is a high percentage of blacks that are paying a rent that is no more than approximately $1,500. The rent that the majority of blacks in Bridgeport are paying is likely around the same price because Bridgeport does not have as much of a business-centered downtown like Stamford does. When looking at the points that correspond to Stamford, it is interesting to note that nearly all of the points indicate that blacks in Stamford are paying a higher rent than those in Bridgeport. What is interesting about the points corresponding to Stamford as a whole is that they are not as bunched up as those corresponding to Stamford. The rent being paid by blacks in Stamford ranges from $1,500 at the lowest to over $3,000 at the highest. This is may be in part due to Stamford having a business-centered downtown area that is likely driving up the prices of housing in the area. Furthermore, Stamford is much more well- developed and modern than Bridgeport is as a whole. An interesting observation can also be made about the gray points on the plot. These points are those that correspond to all of the areas of Fairfield County that are not Bridgeport and Stamford. The majority of these points fall below the 20% mark of the percentage of blacks living in the area and mostly range in rent costs from $1,200 to $2,500. 
- 
+My first visualization is a map of Fairfield County. The red points are those within the longitudinal and latitudinal bounds of Bridgeport, CT, and the blue points are those within that of Stamford, CT. I chose to compare Bridgeport and Stamford to both each other and the rest of Connecticut because they have large downtown areas but are also not as wealthy as other areas of the county. Moreover, both towns are in close proximity to wealthier and larger cities-- Bridgeport is a short distance away from Fairfield and Westport, and Stamford is a short ride away from New York City. 
 ```{r}
 ggplot(bsn_ct, aes(median_rent, race_black)) +
   geom_point(alpha = 0.25, size = 2) +
   geom_point(data = bpt, color =  "olivedrab", size = 2) +
   geom_point(data = stm, color = "salmon", size = 2) +
   theme_minimal() +
-  xlab("Median Rent") +
+  xlab("Median Rent in Dollars") +
   ylab("Percentage of Blacks") +
   ggtitle("Median Rent Compared to Percentage of Blacks") +
   annotate("text", x = 1800, y = 33, color = "salmon", label = "Stamford") +
   annotate("text", x = 500, y = 37, color = "olivedrab", label = "Bridgeport") 
-  
 ```
 
-
-## The final visualization compares the percentage of people who are using public transportation to commute to work and the corresponding commute time ranging from 60 minutes to 99 minutes. The trend line on the plot demonstrates that as more people use public transportation, the time of their commute tends to increase. What is interesting about the points that correspond to Bridgeport and Stamford is that nearly all of them fall below the trend line. Furthermore, the points that are gray and correspond to the other areas of Fairfield County fall above the trend line for the most part. It is likely that the people who are using public transportation for long commutes are going into New York City or New Haven. Moreover, the commute lengths for the majority of these points is relatively low. For those commuting out of Bridgeport, it is likely that they are taking public transportation out of town to work and into one of the nearby cities such as Fairfield or Westport to work, which is not a long distance away. For those commuting out of Stamford, it is likely that they are traveling into the business district of Stamford, into the surrounding areas of Darien and Greenwich, or into New York City. A general observation that can be made from this plot is that the majority of the points fall below 20% of commuters using public transportation. The points that are above the trend line may correspond to people who are commuting to work via car and are stuck in rush hour traffic, such as I-95 South that goes down the coastline of Fairfield County and into New York City. 
+This visualization compares the percentage of people that identify as black in Bridgeport and Stamford, colored in olive and salmon respectively, and the remainder of Fairfield County to the median rent that is being paid in the area. An interesting observation from this visualization is that the majority of the points that correspond with Bridgeport are in the same general area of the plot. This group of points shows that there is a high percentage of blacks that are paying a rent that is no more than approximately 1,500. The rent that the majority of blacks in Bridgeport are paying is likely around the same price because Bridgeport does not have as much of a business-centered downtown like Stamford does. When looking at the points that correspond to Stamford, it is interesting to note that nearly all of the points indicate that blacks in Stamford are paying a higher rent than those in Bridgeport. What is interesting about the points corresponding to Stamford as a whole is that they are not as bunched up as those corresponding to Stamford. The rent being paid by blacks in Stamford ranges from 1,500 at the lowest to over 3,000 at the highest. This is may be in part due to Stamford having a business-centered downtown area that is likely driving up the prices of housing in the area. Furthermore, Stamford is much more well- developed and modern than Bridgeport is as a whole. An interesting observation can also be made about the gray points on the plot. These points are those that correspond to all of the areas of Fairfield County that are not Bridgeport and Stamford. The majority of these points fall below the 20% mark of the percentage of blacks living in the area and mostly range in rent costs from 1,200 to 2,500. 
 
 ```{r}
 ggplot(bsn_ct, aes(commute_public, ctime_60_89 + ctime_90_99)) +
@@ -82,7 +79,9 @@ ggplot(bsn_ct, aes(commute_public, ctime_60_89 + ctime_90_99)) +
   annotate("text", x = 26, y = 7, color = "salmon", label = "Stamford") +
   annotate("text", x = 35, y = 12, color = "olivedrab", label = "Bridgeport") +
   annotate("text", x = 25, y = 28, color = "purple", label = "As More People Use Public Transportation...") +
-  annotate("text", x = 33, y = 26, color = "purple", label = "Commute Time Increases")
+  annotate("text", x = 33, y = 26, color = "purple", label = "...Commute Time Increases")
 ```
 
-## References
+The final visualization compares the percentage of people who are using public transportation to commute to work and the corresponding commute time ranging from 60 minutes to 99 minutes. The trend line on the plot demonstrates that as more people use public transportation, the time of their commute tends to increase. What is interesting about the points that correspond to Bridgeport and Stamford is that nearly all of them fall below the trend line. Furthermore, the points that are gray and correspond to the other areas of Fairfield County fall above the trend line for the most part. It is likely that the people who are using public transportation for long commutes are going into New York City or New Haven. Moreover, the commute lengths for the majority of these points is relatively low. For those commuting out of Bridgeport, it is likely that they are taking public transportation out of town to work and into one of the nearby cities such as Fairfield or Westport to work, which is not a long distance away. For those commuting out of Stamford, it is likely that they are traveling into the business district of Stamford, into the surrounding areas of Darien and Greenwich, or into New York City. A general observation that can be made from this plot is that the majority of the points fall below 20% of commuters using public transportation. The points that are above the trend line may correspond to people who are commuting to work via car and are stuck in rush hour traffic, such as I-95 South that goes down the coastline of Fairfield County and into New York City. 
+
+Overall, I found the observations that I made to be very interesting. I really enjoyed looking at this data and learning more about Fairfield County and the trends within it. If I were to conduct future research on the area, I would expand my information to cover more racial demographics and compare other towns within the county to observe the trends that they produce. 
