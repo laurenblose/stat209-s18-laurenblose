@@ -1,0 +1,100 @@
+---
+title: "Breast Cancer Rates on Varying Scales"
+author: "Lauren Blose"
+output: html_document
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(dpi = 300)
+
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(ggmap)
+library(viridis)
+library(forcats)
+library(smodels)
+library(ggrepel)
+```
+
+```{r}
+cancer <- read_csv("https://statsmaths.github.io/stat_data/cancer_inc_data.csv")
+```
+
+```{r}
+state <- group_summarize(cancer, state)
+```
+
+```{r}
+region <- group_summarize(cancer, region)
+```
+
+Cancer is something very close to home for me, so when I was presented with the opportunity to conduct a further analysis of a dataset that included incident rates of cancer at the county level, I wanted to take advantage of the chance to look further into the details of this data. I decided to determine any correlations between the percentage of people who identify as both White and Asian on the county, state, and regional level, and their rates of breast cancer incidents. There is a positive correlation between the percentage of people in the area who identify as Asian at the county, state, and regional levels and the breast cancer incident rate. This correlation is consistent regarding the percentage of people in the area who identify as White on the county and state levels, but reverses itself on the regional level. 
+
+These first two visualizations are scatterplots with a regression line of the incident rate of breast cancer per 100,000 women over the age of 18 across the percentage of those who identify as White and as Asian on the county level—the broadest level of analysis included in this analysis. As shown in the visualization that displays the percentage of Asian identifiers, the vast majority of the points are between 0% and 10% and disperse to one point being at slightly over 40%. The regression line displays that despite the majority of the points being in the same vicinity, there is a slightly positive correlation between the percentage of those who identify as Asian and the incident rate of breast cancer reports. The visualization that displays the percentage of White identifiers is nearly a direct opposite of that of Asian identifiers, particularly because the vast majority of the points are located between 75% and 100%, with a dispersion in the points located largely between 0% and 50%. This visualization displays a slightly negative correlation between the percentage of those who identify as White and the incident rate of breast cancer reports. 
+
+
+```{r}
+ggplot(cancer, aes(asian_alone, breast)) +
+  geom_point() +
+  geom_smooth(method = "lm") + 
+ xlab("Percentage of Asian Identifiers") +
+  ylab("Incident Rate of Breast Cancer") +
+  ggtitle("Asian Identifiers and Breast Cancer Rate on the County Level")
+
+ggplot(cancer, aes(white_alone, breast)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+ xlab("Percentage of White Identifiers") +
+  ylab("Incident Rate of Breast Cancer") +
+  ggtitle("White Identifiers and Breast Cancer Rate on the County Level")
+```
+
+These next two visualizations are scatterplots with a regression line of the mean incident rate of breast cancer per 100,000 women over the age of 18 across the mean percentage of those who identify as White and as Asian on the state level. As displayed in the visualization including the mean percentage of Asian identifiers in each state, the regression line indicates a slightly positive correlation between this population and the mean incident rate of breast cancer per 100,000 women over the age of 18. The visualization including the mean percentage of White identifiers in each state displays a slightly negative correlation between this population and the mean incident rate of breast cancer per 100,000 women over the age of 18. Similarly to the first two visualizations, the majority of the points for the mean percentage of Asian identifiers in each state is between 0% and 10%, with Hawaii being the only state outside of this area as it is above 30%. The majority of the points included in the visualization for the mean percentage of White identifiers is, as it was in the county level visualization, are all located about the 60% mark with the only two points below 60% being Washington D.C. and Hawaii. 
+
+```{r}
+ggplot(state, aes(asian_alone_mean, breast_mean)) +
+  geom_text(aes(label = state)) +
+  geom_smooth(method = "lm") +
+ xlab("Mean Percentage of Asian Identifiers") +
+  ylab("Mean Incident Rate of Breast Cancer") +
+  ggtitle("Asian Identifiers and Breast Cancer Rate on the State Level")
+
+ggplot(state, aes(white_alone_mean, breast_mean)) +
+  geom_text(aes(label = state)) +
+  geom_smooth(method = "lm") +
+ xlab("Mean Percentage of White Identifiers") +
+  ylab("Mean Incident Rate of Breast Cancer") +
+  ggtitle("White Identifiers and Breast Cancer Rate on the State Level")
+```
+
+These next two visualizations are scatterplots with a regression line of the mean incident rate of breast cancer per 100,000 women over the age of 18 across the mean percentage of those who identify as White and as Asian on the regional level. Similarly to the previous two visualizations including the percentage of Asian identifiers in the area, the majority of the points of the mean percentage of Asian identifiers in each region are located below the 2% mark, with New England and the Middle Atlantic regions below 3%, and the Pacific region being the most far off as it is above 5%. As consistent with the previous visualizations, there is a slightly positive correlation between the mean percentage of Asian identifiers in each region and the mean incident rate of breast cancer per 100,000 women over the age of 18. The visualization including the mean percentage of White identifiers in each region renders an interesting observation. This visualization shows a slight, but positive, correlation between the mean incident rate of breast cancer across the percentage of those who identify as White at the regional level. This, interestingly enough, is opposite to the negative correlations between breast cancer and the percentage of those who identify as White at the state and county level. What is also interesting about this visualization is that the mean percentage of White identifiers in each region is relatively evenly distributed from around 75% to over 90%, whereas that of Asian identifiers is still largely clumped below 3%. 
+
+```{r}
+ggplot(region, aes(asian_alone_mean, breast_mean)) +
+  geom_text_repel(aes(label = region)) +
+  geom_smooth(method = "lm") +
+ xlab("Mean Percentage of Asian Identifiers") +
+  ylab("Mean Incident Rate of Breast Cancer") +
+  ggtitle("Asian Identifiers and Breast Cancer Rate on the Regional Level")
+
+ggplot(region, aes(white_alone_mean, breast_mean)) +
+  geom_text_repel(aes(label = region)) +
+  geom_smooth(method = "lm") +
+ xlab("Mean Percentage of White Identifiers") +
+  ylab("Mean Incident Rate of Breast Cancer") +
+  ggtitle("White Identifiers and Breast Cancer Rate on the Regional Level")
+```
+
+The most significant conclusion that can be drawn from these visualizations stems from the change in correlation between the percentage of people in the area who identify as White on the county and state levels and their breast cancer incident rates and that of the regional level. This change illuminates the need for evaluations and analyses to be made on smaller scales than large scales like that of county and state because, as demonstrated by the regional visualizations, the correlation reverses itself. Ultimately, it is important to evaluate these types of relationships on the person-to-person scale to render the most accurate results. 
+
+
+
+
+
+
+
